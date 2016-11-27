@@ -11,6 +11,15 @@ namespace MagicaVoxelAnimation.Models.Animation
     {
         public PartTransform[] Transforms;
 
+        public Frame(int n)
+        {
+            Transforms = new PartTransform[n];
+            for (int i = 0; i < n; ++i)
+            {
+                Transforms[i].Scaling = new Vector3(1, 1, 1);
+            }
+        }
+
         public void TransformModel(Model model)
         {
             for (int i = 0; i < model.Parts.Length; ++i)

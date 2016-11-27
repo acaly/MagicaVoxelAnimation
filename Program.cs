@@ -73,9 +73,11 @@ namespace MagicaVoxelAnimation
             camera.SetForm(rm.Form);
             var proj = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
 
-            var model = ModelLoader.LoadModel("hiyori.model");
-            var segment = ModelLoader.LoadSegment("hiyori_walk.segment");
-            var animationFrame = new Frame();
+            //var model = ModelLoader.LoadModel("hiyori.model");
+            var model = AnimationTest.CreateModel();
+            //var segment = ModelLoader.LoadSegment("hiyori_walk.segment");
+            var segment = AnimationTest.CreateSegment();
+            var animationFrame = new Frame(model.Parts.Length);
             float time = 0;
 
             var bdm = new BlockDataManager(rm);
@@ -86,6 +88,10 @@ namespace MagicaVoxelAnimation
                 Proj = proj,
                 Shader = shaderFace,
             };
+
+            var editor = new FormEditRotation(animationFrame);
+            editor.Show();
+
             RenderLoopHelper.Run(rm, false, delegate(RenderContext frame)
             {
                 //--- render world ---
@@ -94,9 +100,12 @@ namespace MagicaVoxelAnimation
 
                 rm.ImmediateContext.ApplyShader(shaderFace);
 
-                time += 1.0f;
-                segment.SetupFrame(animationFrame, time);
-                animationFrame.TransformModel(model);
+                time += 0.1f;
+                //segment.SetupFrame(animationFrame, time);
+                lock (animationFrame)
+                {
+                    animationFrame.TransformModel(model);
+                }
 
                 renderer.Frame = frame;
                 renderer.Render();

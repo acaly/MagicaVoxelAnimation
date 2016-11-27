@@ -19,19 +19,29 @@ namespace MagicaVoxelAnimation.Models.Animation
             _Model = model;
 
             _Parts = new RenderData<BlockRenderData>[model.Parts.Length][];
-            Voxel.Model vmodel = new Voxel.Model();
-            vmodel.Palette = model.Palette;
-            vmodel.SizeX = model.SizeX;
-            vmodel.SizeY = model.SizeY;
-            vmodel.SizeZ = model.SizeZ;
+            Voxel.Model[] vmodel = new Voxel.Model[model.Parts.Length];
             for (int i = 0; i < model.Parts.Length; ++i)
             {
+                vmodel[i] = new Voxel.Model();
+                vmodel[i].Palette = model.Palette;
+                vmodel[i].SizeX = model.SizeX;
+                vmodel[i].SizeY = model.SizeY;
+                vmodel[i].SizeZ = model.SizeZ;
+                vmodel[i].Voxel = model.Parts[i].Voxel;
+            }
+
+            for (int i = 0; i < model.Parts.Length; ++i)
+            {
+                var p = model.Parts[i];
                 bdm.Clear();
                 bdm.BeginData();
-                vmodel.Voxel = model.Parts[i].Voxel;
-                //don't need to save it
-                var provider = new Voxel.ModelDataProvider(vmodel);
-                provider.Translation = new Vector4(model.Parts[i].Translation, 0);
+                Voxel.Model[] adj = null;
+                if (p.AdjacentParts != null)
+                {
+                    adj = p.AdjacentParts.Select(ii => vmodel[ii]).ToArray();
+                }
+                var provider = new Voxel.ModelDataProvider(vmodel[i], adj);
+                provider.Translation = new Vector4(p.Translation, 0);
                 provider.FlushRenderData(bdm);
                 _Parts[i] = bdm.EndData();
             }

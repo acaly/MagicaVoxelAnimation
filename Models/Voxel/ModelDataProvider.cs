@@ -18,8 +18,10 @@ namespace MagicaVoxelAnimation.Models.Voxel
         }
         private readonly int _Width, _Height;
         private readonly ModelCoordDictionary _Dictionary = new ModelCoordDictionary();
+        private readonly ModelCoordDictionary _AdjDictionary = new ModelCoordDictionary();
 
-        public ModelDataProvider(Model model)
+        //TODO avoid adding adj to new dict. try to ask other provider
+        public ModelDataProvider(Model model, Model[] adj = null)
         {
             _Width = Math.Max(model.SizeX, model.SizeY);
             _Height = model.SizeZ;
@@ -29,6 +31,19 @@ namespace MagicaVoxelAnimation.Models.Voxel
                 var v = model.Voxel[i];
                 var c = model.Palette[v.ColorIndex].ToArgb();
                 _Dictionary.Set(new Coord(v.X, v.Y, v.Z), c);
+            }
+            if (adj != null)
+            {
+                for (int j = 0; j < adj.Length; ++j)
+                {
+                    var m = adj[j];
+                    for (int i = 0; i < m.Voxel.Length; ++i)
+                    {
+                        var v = m.Voxel[i];
+                        var c = m.Palette[v.ColorIndex].ToArgb();
+                        _AdjDictionary.Set(new Coord(v.X, v.Y, v.Z), c);
+                    }
+                }
             }
         }
 
@@ -44,7 +59,7 @@ namespace MagicaVoxelAnimation.Models.Voxel
 
         protected override bool AnyBlockAt(Coord coord)
         {
-            return _Dictionary.Contains(coord);
+            return _Dictionary.Contains(coord) || _AdjDictionary.Contains(coord);
         }
 
         protected override int GetBlockColor(Coord coord)

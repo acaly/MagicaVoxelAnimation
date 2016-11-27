@@ -75,6 +75,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormEditRotation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormEditRotation.Designer.cs">
+      <DependentUpon>FormEditRotation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Animation\AnimationTest.cs" />
     <Compile Include="Models\Animation\Frame.cs" />
     <Compile Include="Models\Animation\InterpolationMethod.cs" />
@@ -106,6 +112,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormEditRotation.resx">
+      <DependentUpon>FormEditRotation.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -128,9 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

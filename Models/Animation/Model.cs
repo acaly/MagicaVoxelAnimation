@@ -21,6 +21,7 @@ namespace MagicaVoxelAnimation.Models.Animation
             public Vector3 BasePoint;
             public Vector3 Translation;
             public VoxelData[] Voxel;
+            public int[] AdjacentParts;
 
             [NonSerialized]
             public Matrix Transform;
